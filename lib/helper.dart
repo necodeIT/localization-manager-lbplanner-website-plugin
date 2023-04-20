@@ -1,14 +1,9 @@
-import 'package:http/http.dart' as http;
+import 'dart:io';
 
 Future<String> getLocaleTranslationFileContent(String filename) async {
-  var url =
-      'https://raw.githubusercontent.com/necodeIT/lb_planner/web/locale/$filename';
-
-  print(url);
-  var response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    return response.body;
-  } else {
-    throw Exception('Failed to load translation file');
-  }
+  var folder = "files";
+  // Read the file in the files folder
+  var file = File('$folder/$filename');
+  var content = await file.readAsString();
+  return content;
 }
