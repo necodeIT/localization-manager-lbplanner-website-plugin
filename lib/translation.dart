@@ -6,7 +6,7 @@ import 'package:localization_manager_plugin/localization_manager_plugin.dart';
 
 final languageCode = "de";
 
-void getTranslationFolder() async {
+Future<Map<int, Map<String, dynamic>>> getMapWithTheContents() async {
   /**
    * 
    * docs_headings_de.csv hat eine beziehung zu docs_texts_de.csv 
@@ -91,4 +91,14 @@ void getTranslationFolder() async {
       }
     }
   }
+
+  return folders;
+}
+
+Future<TranslationFolder> getTranslationFolder() async {
+  Map<int, Map<String, dynamic>> folders = await getMapWithTheContents();
+
+  var translationFolder = TranslationFolder(name: "Section", keys: []);
+
+  return translationFolder;
 }
