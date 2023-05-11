@@ -42,7 +42,7 @@ void getTranslationFolder() async {
 
   Map<int, String> mainFolders = HashMap();
   Map<int, Map<String, String>> subFolders = HashMap();
-  Map<int, Map<String, List<String>>> subFoldersMainContent = HashMap();
+  Map<String, List<String>> subFoldersMainContent = HashMap();
 
   // Read the main folder headers. The format is: 0, Section
   var mainHeader = await helper
@@ -74,11 +74,31 @@ void getTranslationFolder() async {
           .getLocaleTranslationFileContent("docs_texts_$languageCode.csv");
       var subContentLines = subContent.split("\n");
       String subContentLine;
+      int i = 0;
       for (subContentLine in subContentLines) {
+        if (i == 5) break;
         // Split only twice as the content can have commas
         List<String> subContentLineSplit =
             helper.customSplit(subContentLine, ",", 2);
+
+        if (subContentLineSplit.length < 3) continue;
+        if (subFoldersMainContent[subContentLineSplit[0]] == null) {
+          if (subContentLineSplit[2].isNotEmpty) {
+            subFoldersMainContent[subContentLineSplit[0]] = [
+              subContentLineSplit[2]
+            ];
+          } else {
+            subFoldersMainContent[subContentLineSplit[0]] = [];
+          }
+        } else if (subContentLineSplit[2].isNotEmpty) {
+          subFoldersMainContent[subContentLineSplit[0]]!
+              .add(subContentLineSplit[2]);
+        }
+
+        //
       }
     }
   }
+
+  print(subFoldersMainContent);
 }
